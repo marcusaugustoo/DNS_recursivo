@@ -2,7 +2,7 @@
 
 Este é um projeto para a disciplina de Redes de Computadores que implementa um resolvedor DNS iterativo simples, escrito em C. O programa é capaz de resolver nomes de domínio para endereços IPv4 começando a consulta a partir dos servidores raiz da internet e seguindo as delegações.
 
-[cite_start]Este README contém as instruções para compilação e execução do programa.
+Este README contém as instruções para compilação e execução do programa.
 
 ## Pré-requisitos
 
