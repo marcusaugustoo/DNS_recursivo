@@ -1,5 +1,3 @@
-// dns_utils.c
-
 #include "dns_utils.h"
 #include <string.h>
 #include <stdio.h>
@@ -8,8 +6,8 @@ void format_dns_name(unsigned char *dns_name, const char *hostname) {
     char hostname_copy[256];
     strcpy(hostname_copy, hostname);
     strcat(hostname_copy, ".");
-    int lock = 0;
-    for (int i = 0; i < strlen(hostname_copy); i++) {
+    size_t lock = 0;
+    for (size_t i = 0; i < strlen(hostname_copy); i++) {
         if (hostname_copy[i] == '.') {
             *dns_name++ = i - lock;
             for (; lock < i; lock++) {
@@ -22,40 +20,40 @@ void format_dns_name(unsigned char *dns_name, const char *hostname) {
 }
 
 int decode_dns_name(unsigned char *reader, unsigned char *buffer, char *decoded_name) {
-    int name_len = 0;
+    int bytes_consumed = 0;
+    int name_pos = 0;
     int jumped = 0;
-    int jumps_performed = 0;
-    int total_bytes_read = 0;
-    unsigned char *name_ptr = reader;
-    while (*name_ptr != 0) {
-        if ((*name_ptr & 0xC0) == 0xC0) {
-            if (jumps_performed > 5) return -1;
-            int offset = ((*name_ptr & 0x3F) << 8) + *(name_ptr + 1);
-            name_ptr = buffer + offset;
+    int jump_count = 0;
+    unsigned char *p = reader;
+
+    while (*p != 0) {
+        if (jump_count++ > 10) return -1;
+
+        if ((*p & 0xC0) == 0xC0) {
             if (!jumped) {
-                total_bytes_read += 2;
+                bytes_consumed = (p - reader) + 2;
                 jumped = 1;
             }
-            jumps_performed++;
-            continue;
+            int offset = ((*p & 0x3F) << 8) | *(p + 1);
+            p = buffer + offset;
         } else {
-            int label_len = *name_ptr;
-            name_ptr++;
-            memcpy(decoded_name + name_len, name_ptr, label_len);
-            name_len += label_len;
-            name_ptr += label_len;
-            if (*name_ptr != 0) {
-                decoded_name[name_len] = '.';
-                name_len++;
+            int label_len = *p;
+            p++;
+
+            if (name_pos > 0) {
+                decoded_name[name_pos++] = '.';
             }
-            if (!jumped) {
-                total_bytes_read += (label_len + 1);
-            }
+            memcpy(decoded_name + name_pos, p, label_len);
+            name_pos += label_len;
+            p += label_len;
         }
     }
-    decoded_name[name_len] = '\0';
+
+    decoded_name[name_pos] = '\0';
+
     if (!jumped) {
-        total_bytes_read++;
+        bytes_consumed = (p - reader) + 1;
     }
-    return total_bytes_read;
+
+    return bytes_consumed;
 }

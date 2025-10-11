@@ -1,32 +1,24 @@
 # Nome do compilador
-CC=gcc
+CC = gcc
 
-# Flags de compilação: -Wall (mostra todos os avisos), -g (informações para debug)
-CFLAGS=-Wall -g
+# Flags de compilação
+CFLAGS = -Wall -g -pthread
 
-# Nome do executável final
-TARGET=dns_resolver
+# Arquivos-fonte
+SRC = main.c resolver.c dns_utils.c cache_client.c cache_daemon.c
 
-# Pasta onde os fontes estão
-SRCDIR=src
+# Executáveis
+TARGET_RESOLVER = dns_resolver
+TARGET_CACHE = dns_cache
 
-# Lista de todos os arquivos fonte .c
-SOURCES=$(wildcard $(SRCDIR)/*.c)
+# Regra padrão
+all: $(TARGET_RESOLVER) $(TARGET_CACHE)
 
-# Substitui a extensão .c por .o para criar a lista de arquivos objeto
-OBJECTS=$(SOURCES:.c=.o)
+$(TARGET_RESOLVER): main.c resolver.c dns_utils.c cache_client.c
+	$(CC) $(CFLAGS) -o $(TARGET_RESOLVER) main.c resolver.c dns_utils.c cache_client.c -lssl -lcrypto
 
-# Regra principal: criar o executável
-all: $(TARGET)
+$(TARGET_CACHE): cache_daemon.c cache_client.c
+	$(CC) $(CFLAGS) -o $(TARGET_CACHE) cache_daemon.c cache_client.c
 
-# Regra para linkar os arquivos objeto e criar o executável final
-$(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJECTS)
-
-# Regra para compilar cada arquivo .c em um arquivo .o
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# Regra para limpar os arquivos compilados
 clean:
-	rm -f $(OBJECTS) $(TARGET)
+	rm -f $(TARGET_RESOLVER) $(TARGET_CACHE) *.o
