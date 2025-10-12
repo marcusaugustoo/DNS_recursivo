@@ -12,12 +12,12 @@ char* resolve_iterative(const char *hostname_to_resolve,
 
 void resolver_set_dot(int enabled, const char *sni);
 
-/* --- Adições para CLI e Trust Anchor --- */
+//add pra CLI e Trust Anchor
 
-/* Define o modo de operação do resolver (recursive, validating, etc.) */
+// modo de operação do resolver (recursive, validating, etc.)
 void resolver_set_mode(const char *mode);
 
-/* Carrega o arquivo de âncora de confiança (root.keys) */
+// carrega o arquivo d ancora de confiança (root.keys)
 int resolver_load_trust_anchor(const char *path);
 
 #endif

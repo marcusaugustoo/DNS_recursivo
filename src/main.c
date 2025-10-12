@@ -7,25 +7,27 @@
 #include <stdint.h>
 #include <strings.h>
 
+// converte o tp d consulta em string (ex: "A", "AAAA") p o cod numerico DNS
 static uint16_t qtype_from_string(const char *str) {
     if (strcasecmp(str, "A") == 0) return TYPE_A;
     if (strcasecmp(str, "AAAA") == 0) return TYPE_AAAA;
     if (strcasecmp(str, "MX") == 0) return TYPE_MX;
     if (strcasecmp(str, "NS") == 0) return TYPE_NS;
-    return TYPE_A;
+    return TYPE_A; // padrao se não reconhecido
 }
 
 int main(int argc, char *argv[]) {
     char *hostname = NULL;
     char *qtype_str = "A";
-    char *start_server = "198.41.0.4";
+    char *start_server = "198.41.0.4"; // servidor raiz padrao
     int trace_mode = 0;
     int timeout_sec = 5;
-    int use_dot = 0;
+    int use_dot = 0; // DNS-over-TLS -> DoT
     char sni_value[256] = {0};
     char *mode_str = NULL;
     char *trust_anchor_file = NULL;
 
+    // processamento d args d linha de comando
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--name") == 0 && i + 1 < argc)
             hostname = argv[++i];
@@ -45,6 +47,7 @@ int main(int argc, char *argv[]) {
             trust_anchor_file = argv[++i];
     }
 
+    // verific basica d uso
     if (!hostname) {
         fprintf(stderr,
                 "Uso: %s --name <hostname> [--qtype <A|AAAA|MX|NS>] "
@@ -54,11 +57,13 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    // define o modo do resolvedor (recursivo, iterativo, dot, etc)
     if (mode_str)
         resolver_set_mode(mode_str);
     else
-        resolver_set_mode("recursive");
+        resolver_set_mode("recursive"); // padrao
 
+    // carrega trust anchor s fornecido (p validacao DNSSEC)
     if (trust_anchor_file) {
         if (resolver_load_trust_anchor(trust_anchor_file) != 0)
             fprintf(stderr, "Continuando sem trust-anchor (não encontrado).\n");
@@ -67,6 +72,8 @@ int main(int argc, char *argv[]) {
     }
 
     uint16_t qtype = qtype_from_string(qtype_str);
+
+    // ativa DNS-over-TLS s modo "dot" estiver selecionado
     if (strcasecmp(mode_str ? mode_str : "", "dot") == 0)
         use_dot = 1;
     if (use_dot)
@@ -75,6 +82,7 @@ int main(int argc, char *argv[]) {
     printf("--- Resolvendo %s (tipo: %s, servidor inicial: %s, timeout: %ds) ---\n",
            hostname, qtype_str, start_server, timeout_sec);
 
+    // faz a resolucao iterativa d fato
     char *final_ip = resolve_iterative(hostname, start_server, qtype, 0,
                                        trace_mode, timeout_sec);
 
@@ -86,5 +94,6 @@ int main(int argc, char *argv[]) {
         printf(">>> Não foi possível obter uma resposta final.\n");
     }
     printf("----------------------------------------\n");
+
     return 0;
 }
