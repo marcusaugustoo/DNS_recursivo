@@ -1,7 +1,9 @@
 # Resolver Recursivo Validante com Cache e DNSSEC
 
 **Redes de Computadores - Trabalho 1**
+
 **Professor:** Irineu Sotoma
+
 **Autores:** Caio K. F. Mendes, Marcus Augusto F. Madureira, Mariana C. Piccini
 
 ---
