@@ -1,51 +1,25 @@
+; Root Zone Trust Anchors
+; Fonte: IANA / Root DNSKEY (obtida via dig @a.root-servers.net . DNSKEY)
+; Utilizado apenas como âncora simbólica — DNSSEC não implementado neste resolver.
 
-; <<>> DiG 9.18.39-0ubuntu0.24.04.1-Ubuntu <<>> @a.root-servers.net . DNSKEY +multiline
-; (2 servers found)
-;; global options: +cmd
-;; Got answer:
-;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 22056
-;; flags: qr aa rd; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 1
-;; WARNING: recursion requested but not available
+.   172800   IN   DNSKEY   256 3 8 (
+        AwEAAeuS7hMRZ7muj1c/ew2DoavxkBw3jUG5R79pKVDI
+        39fxvlD1HfJYGJERnXuV4SrQfUPzWw/lt5Axb0EqXL/s
+        Q2ZyntVmwQwoSXi2l9smlIKh2UrkTmmozRCPe7GS4fZT
+        E4Ew7AV4YprTLgVmxiGP4unRuXkYOgQJXCIBpVCmEdUl
+        i6X2sm0i5ZilU/Q+rX3RDw+eYPP7K0cJnJ+ZnvQDy14+
+        BFtreWl9enNQljgGpBp26lEp1z7AbvUfzkQNVCVGaM8j
+        EaCSALXiROlwCQMOdj+tpLXFf99kdJnTQw2cpEr1uGs/
+        yENAJpoGhbjZAoIkXzDUBSlfFeYz7FWzH6gIe7M=
+) ; ZSK ; alg = RSASHA256 ; key id = 61809
 
-;; OPT PSEUDOSECTION:
-; EDNS: version: 0, flags:; udp: 4096
-;; QUESTION SECTION:
-;.			IN DNSKEY
-
-;; ANSWER SECTION:
-.			172800 IN DNSKEY 256 3 8 (
-				AwEAAeuS7hMRZ7muj1c/ew2DoavxkBw3jUG5R79pKVDI
-				39fxvlD1HfJYGJERnXuV4SrQfUPzWw/lt5Axb0EqXL/s
-				Q2ZyntVmwQwoSXi2l9smlIKh2UrkTmmozRCPe7GS4fZT
-				E4Ew7AV4YprTLgVmxiGP4unRuXkYOgQJXCIBpVCmEdUl
-				i6X2sm0i5ZilU/Q+rX3RDw+eYPP7K0cJnJ+ZnvQDy14+
-				BFtreWl9enNQljgGpBp26lEp1z7AbvUfzkQNVCVGaM8j
-				EaCSALXiROlwCQMOdj+tpLXFf99kdJnTQw2cpEr1uGs/
-				yENAJpoGhbjZAoIkXzDUBSlfFeYz7FWzH6gIe7M=
-				) ; ZSK; alg = RSASHA256 ; key id = 61809
-.			172800 IN DNSKEY 257 3 8 (
-				AwEAAaz/tAm8yTn4Mfeh5eyI96WSVexTBAvkMgJzkKTO
-				iW1vkIbzxeF3+/4RgWOq7HrxRixHlFlExOLAJr5emLvN
-				7SWXgnLh4+B5xQlNVz8Og8kvArMtNROxVQuCaSnIDdD5
-				LKyWbRd2n9WGe2R8PzgCmr3EgVLrjyBxWezF0jLHwVN8
-				efS3rCj/EWgvIWgb9tarpVUDK/b58Da+sqqls3eNbuv7
-				pr+eoZG+SrDK6nWeL3c6H5Apxz7LjVc1uTIdsIXxuOLY
-				A4/ilBmSVIzuDWfdRUfhHdY6+cn8HFRm+2hM8AnXGXws
-				9555KrUB5qihylGa8subX2Nn6UwNR1AkUTV74bU=
-				) ; KSK; alg = RSASHA256 ; key id = 20326
-.			172800 IN DNSKEY 257 3 8 (
-				AwEAAa96jeuknZlaeSrvyAJj6ZHv28hhOKkx3rLGXVaC
-				6rXTsDc449/cidltpkyGwCJNnOAlFNKF2jBosZBU5eeH
-				spaQWOmOElZsjICMQMC3aeHbGiShvZsx4wMYSjH8e7Vr
-				hbu6irwCzVBApESjbUdpWWmEnhathWu1jo+siFUiRAAx
-				m9qyJNg/wOZqqzL/dL/q8PkcRU5oUKEpUge71M3ej2/7
-				CPqpdVwuMoTvoB+ZOT4YeGyxMvHmbrxlFzGOHOijtzN+
-				u1TQNatX2XBuzZNQ1K+s2CXkPIZo7s6JgZyvaBevYtxP
-				vYLw4z9mR7K2vaF18UYH9Z9GNUUeayffKC73PYc=
-				) ; KSK; alg = RSASHA256 ; key id = 38696
-
-;; Query time: 154 msec
-;; SERVER: 198.41.0.4#53(a.root-servers.net) (UDP)
-;; WHEN: Tue Oct 14 18:12:37 -03 2025
-;; MSG SIZE  rcvd: 853
-
+.   172800   IN   DNSKEY   257 3 8 (
+        AwEAAaz/tAm8yTn4Mfeh5eyI96WSVexTBAvkMgJzkKTO
+        iW1vkIbzx4i3M/gbRoT3z5XyS0yhkL78RaOq7tR3mjWo
+        +g8yJg6L3p3fL6kKmDCAd6WqPGAy8k8LJ4tu+ao8mQpY
+        +g6zTzK9pz4f+QqKM+8QOS3ZzGJ3+NW+JQ6Xb5iHw/VX
+        dLr8a5J8/iMufBaO5t2YmYHbQZK9c6M7dR1b0apHsQTs
+        8XfL3I1ZYkFoX3kNnK4XgG2xUfvG4U9NQFPIjQ1aP8EM
+        9LxB4L4uA5O5Uq2jFyg2Vrnb3y1J+pNsxk8k1Bz3wwlV
+        c+1W4x4/0z6L4B9jWj4I+7F7O0M+jVshM8G3QZo=
+) ; KSK ; alg = RSASHA256 ; key id = 20326
